@@ -18,7 +18,7 @@ app.get("/users", async (req, res) => {
     database: "ecommerce_practice",
     ssl: {
       // Đọc file chứng chỉ CA từ hệ thống Mac của bạn
-      ca: fs.readFileSync("/etc/ssl/cert.pem"),
+      ca: fs.readFileSync(__dirname + "/isrgrootx1.pem"),
       // Đảm bảo Node.js kiểm tra đúng tên miền của server
       rejectUnauthorized: true,
     },
