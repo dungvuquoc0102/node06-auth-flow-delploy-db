@@ -12,18 +12,17 @@ app.get("/users", async (req, res) => {
   // Create the connection to database
   const connection = await mysql.createConnection({
     host: "gateway01.ap-southeast-1.prod.aws.tidbcloud.com",
-    port: 4000,
-    user: "2dXTHNbpdHVjaYX.root",
-    password: "l1g1JnYXysDpXjqI",
+    port: "4000",
+    user: "3bDShXot2FVxLsD.root",
+    password: "PRuR9DXN8PB4wfIx",
     database: "ecommerce_practice",
     ssl: {
-      // Đọc file chứng chỉ CA từ hệ thống Mac của bạn
       ca: fs.readFileSync(__dirname + "/isrgrootx1.pem"),
-      // Đảm bảo Node.js kiểm tra đúng tên miền của server
       rejectUnauthorized: true,
     },
   });
 
+  // Get all users
   try {
     const [results] = await connection.query("SELECT * FROM `users`");
     res.json(results);
