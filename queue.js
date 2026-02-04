@@ -14,41 +14,39 @@ const nodemailer = require("nodemailer");
     },
   });
 
-  while (true) {
-    const [rows] = await connection.query(
-      "UPDATE `email_queues` SET `status` = 'processing' WHERE `status` = 'pending'",
-    );
+  const [rows] = await connection.query(
+    "UPDATE `email_queues` SET `status` = 'processing' WHERE `status` = 'pending'",
+  );
 
-    console.log("Success");
+  console.log("Success");
 
-    try {
-      const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 587,
-        secure: false, // Sử dụng TLS
-        auth: {
-          user: "dung.vuquoc0102@gmail.com",
-          pass: "zeoa tfra rfie jgfr", // The 16-character App Password
-        },
-        tls: {
-          // Cái này giúp tránh lỗi chứng chỉ không hợp lệ trên một số server hosting
-          rejectUnauthorized: false,
-        },
-      });
+  try {
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false, // Sử dụng TLS
+      auth: {
+        user: "dung.vuquoc0102@gmail.com",
+        pass: "zeoa tfra rfie jgfr", // The 16-character App Password
+      },
+      tls: {
+        // Cái này giúp tránh lỗi chứng chỉ không hợp lệ trên một số server hosting
+        rejectUnauthorized: false,
+      },
+    });
 
-      const info = await transporter.sendMail({
-        from: '"Dung Vu Quoc" <dung.vuquoc0102@gmail.com>', // sender address
-        to: "dungvqf8185@fullstack.edu.vn",
-        subject: "Hello ✔",
-        text: "Hello world?", // Plain-text version of the message
-        html: "<b>Hello world?</b>", // HTML version of the message
-      });
+    console.log("Create transporter success");
 
-      console.log("Message sent:", info.messageId);
-    } catch (error) {
-      console.log(error);
-    }
+    const info = await transporter.sendMail({
+      from: '"Dung Vu Quoc" <dung.vuquoc0102@gmail.com>', // sender address
+      to: "dungvqf8185@fullstack.edu.vn",
+      subject: "Hello ✔",
+      text: "Hello world?", // Plain-text version of the message
+      html: "<b>Hello world?</b>", // HTML version of the message
+    });
 
-    await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log("Message sent:", info.messageId);
+  } catch (error) {
+    console.log(error);
   }
 })();
