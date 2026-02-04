@@ -1,5 +1,5 @@
 const mysql2 = require("mysql2/promise");
-const nodemailer = require("nodemailer");
+const { Resend } = require("resend");
 
 (async () => {
   const connection = await mysql2.createConnection({
@@ -21,31 +21,16 @@ const nodemailer = require("nodemailer");
   console.log("Success");
 
   try {
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false, // Sử dụng TLS
-      auth: {
-        user: "dung.vuquoc0102@gmail.com",
-        pass: "zeoa tfra rfie jgfr", // The 16-character App Password
-      },
-      tls: {
-        // Cái này giúp tránh lỗi chứng chỉ không hợp lệ trên một số server hosting
-        rejectUnauthorized: false,
-      },
+    const resend = new Resend("re_VUJZvXvL_KekbnRVeuBz93Y4zTkqA1n91");
+
+    resend.emails.send({
+      from: "onboarding@resend.dev",
+      to: "dung.vuquoc0102@gmail.com",
+      subject: "Hello World",
+      html: "<p>Congrats on sending your <strong>first email</strong>!</p>",
     });
 
-    console.log("Create transporter success");
-
-    const info = await transporter.sendMail({
-      from: '"Dung Vu Quoc" <dung.vuquoc0102@gmail.com>', // sender address
-      to: "dungvqf8185@fullstack.edu.vn",
-      subject: "Hello ✔",
-      text: "Hello world?", // Plain-text version of the message
-      html: "<b>Hello world?</b>", // HTML version of the message
-    });
-
-    console.log("Message sent:", info.messageId);
+    console.log("Email sent successfully");
   } catch (error) {
     console.log(error);
   }
